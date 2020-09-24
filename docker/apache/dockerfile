@@ -1,0 +1,8 @@
+FROM httpd:2.4
+# The default Documentroot of httpd image is /usr/local/apache2/htdocs/
+# I'm gonna change it to /var/www/html/ just by preference (showcase how to do it) from the custom_apache.conf file
+RUN mkdir -p /var/www/html
+COPY ./custom_apache.conf /usr/local/apache2/conf/custom_apache.conf
+# add the include statement to the main apache configuration so it includes our custom conf
+RUN echo "Include /usr/local/apache2/conf/custom_apache.conf" \
+    >> /usr/local/apache2/conf/httpd.conf
