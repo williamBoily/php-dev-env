@@ -1,8 +1,16 @@
 FROM httpd:2.4
 # The default Documentroot of httpd image is /usr/local/apache2/htdocs/
-# I'm gonna change it to /var/www/html/ just by preference (showcase how to do it) from the custom_apache.conf file
-RUN mkdir -p /var/www/html
-COPY ./custom_apache.conf /usr/local/apache2/conf/custom_apache.conf
+# I'm gonna change it to /var/www/project/ to follow symfony documentation along
+RUN mkdir -p /var/www/project
+
+# use sed to enable module by uncommenting them
+RUN sed -i \
+        -e 's/^#\(LoadModule .*mod_proxy.so\)/\1/' \
+        -e 's/^#\(LoadModule .*mod_proxy_fcgi.so\)/\1/' \
+        /usr/local/apache2/conf/httpd.conf
+
+COPY ./symfony_apache.conf /usr/local/apache2/conf/extra/symfony_apache.conf
+#COPY ./custom_apache.conf /usr/local/apache2/conf/extra/custom_apache.conf
 # add the include statement to the main apache configuration so it includes our custom conf
-RUN echo "Include /usr/local/apache2/conf/custom_apache.conf" \
+RUN echo "Include /usr/local/apache2/conf/extra/symfony_apache.conf" \
     >> /usr/local/apache2/conf/httpd.conf

@@ -6,7 +6,7 @@ services:
     networks:
       - backend
     volumes:
-      - ./app/src/:/var/www/html/
+      - ./php_sandbox/:/var/www/project/
   apache:
     container_name: web
     build: './docker/apache/'
@@ -19,7 +19,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./app/src/:/var/www/html/
+      - ./php_sandbox/:/var/www/project/
 #  mysql:
 #    image: mysql:5.6.40
 #    networks:
