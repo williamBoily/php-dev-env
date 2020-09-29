@@ -4,7 +4,7 @@ services:
     container_name: php
     build: './docker/php/'
     networks:
-      - backend
+      - php-sandbox-network
     volumes:
       - ./php_sandbox/:/var/www/project/
   apache:
@@ -15,11 +15,18 @@ services:
       #- mysql
     networks:       
       #- frontend
-      - backend
+      - php-sandbox-network
     ports:
       - "8080:80"
     volumes:
       - ./php_sandbox/:/var/www/project/
+  redis:
+    container_name: redis
+    build: './docker/redis/'
+    networks: 
+      - php-sandbox-network
+    ports: 
+      - "6379:6379"
 #  mysql:
 #    image: mysql:5.6.40
 #    networks:
@@ -28,4 +35,4 @@ services:
 #      - MYSQL_ROOT_PASSWORD=rootpassword
 networks:
 #  frontend:
-  backend:
+  php-sandbox-network:
